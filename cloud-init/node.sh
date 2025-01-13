@@ -268,6 +268,7 @@ then ### Code running only on node1
     vinfra --vinfra-password ${password_admin} cluster settings dns set --nameservers "8.8.8.8,1.1.1.1"
 
     # Deploying storage cluster
+    sleep 120 # for slow disk initialization
     log_msg "Deploying storage cluster..."
     retry vinfra --vinfra-password ${password_admin} cluster create \
     --disk $mds_disk:mds-system \
@@ -347,6 +348,7 @@ then ### Code running only on node1
     log_msg "Setting up HA...done"
 
     # Deploy compute cluster
+    sleep 120 # for slow disk initialization
     log_msg "Creating compute cluster..."
     retry vinfra --vinfra-password ${password_admin} \
     service compute create \
@@ -402,6 +404,7 @@ else
     log_msg "Waiting for storage cluster to initialize...done"
 
     # Join the storage cluster
+    sleep 120 # for slow disk initialization
     node_id=`hostname`
     log_msg "Joining the storage cluster..."
     retry sshpass -p ${password_root} ssh -o 'StrictHostKeyChecking=no' -o LogLevel=QUIET root@${mn_ip} \
