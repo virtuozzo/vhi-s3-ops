@@ -19,7 +19,6 @@ function get_token {
   local count=1
   local cmd="vinfra --vinfra-password ${password_admin} node token show -f value -c token"
 
-  
   while [ -z "$token" ] && [ $count -le $max_retries ]; do
     token=$(sshpass -p ${password_root} ssh -q -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@${mn_ip} "$cmd")
 
@@ -41,7 +40,7 @@ function get_token {
 
 function log_msg {
     message=$1
-    echo "[DEBUG] $(date +'%Y-%m-%d %H:%M:%S,%3N') $message" >> "/tmp/deploy.log"
+    echo "[DEBUG] $(date +'%Y-%m-%d %H:%M:%S,%3N') $message" >> "/var/log/deployment.log"
 }
 
 function retry {
@@ -305,12 +304,6 @@ then ### Code running only on node1
     done 
     log_msg "Waiting for other nodes to register...done"
 
-    # Remove temporay IP address from eth3 Public_VM virtual network
-    #remove_ipv4_from_iface eth3 "node1.vstoragedomain"
-    #remove_ipv4_from_iface eth3 "node2.vstoragedomain"
-    #remove_ipv4_from_iface eth3 "node3.vstoragedomain"
-    #remove_ipv4_from_iface eth3 "node4.vstoragedomain"
-
     ## Create Domain
     vinfra --vinfra-password ${password_admin} \
             domain create --description "autocreated for lab env" --enable "WonderSI" -f value
@@ -327,7 +320,7 @@ then ### Code running only on node1
      log_msg "Creating Domain User so that you don't have to..."    
 
 	
-# Assemble lists of compute and HA nodes
+    # Assemble lists of compute and HA nodes
     compute_nodes=$(vinfra --vinfra-password ${password_admin} node list -f value -c host -c id | sort -k2 | awk '{print $1}' | tr '\n' ' ' | sed 's/.$//' | sed -e 's: :,:g')
     ha_nodes=node1,node2,node3
 
@@ -348,7 +341,6 @@ then ### Code running only on node1
     log_msg "Setting up HA...done"
 
     # Deploy compute cluster
-    sleep 120 # for slow disk initialization
     log_msg "Creating compute cluster..."
     retry vinfra --vinfra-password ${password_admin} \
     service compute create \
@@ -404,6 +396,7 @@ else
     log_msg "Waiting for storage cluster to initialize...done"
 
     # Join the storage cluster
+    log_msg "Waiting 120 sec. for disks to initialize before joining storage cluster."
     sleep 120 # for slow disk initialization
     node_id=`hostname`
     log_msg "Joining the storage cluster..."
