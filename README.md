@@ -86,6 +86,7 @@ The project you are working with must have the following images:
 
 **Ubuntu 20.04 QCOW2 image.**
 - The image must have `cloud-init` installed.
+- The version must be 20.04. Other versions haven't been tested and will likely fail to configure.
 
 > You can get the latest version of the image on Ubuntu website:
 > 
@@ -223,7 +224,7 @@ export OS_USER_DOMAIN_NAME=vhi-s3-ops              # replace "vhi-s3-ops" with y
 export OS_PROJECT_NAME=student1                    # replace "student1" with your project name again
 export OS_USERNAME=user.name                       # replace "user.name" with your user name
 export OS_PASSWORD=**********                      # replace "**********" with password of your user
-export OS_AUTH_URL=https://mycloud.com:5000/v3     # replace "mycloud.com" with the domain name of your self-service panel
+export OS_AUTH_URL=https://mycloud.com:5000/v3     # replace "mycloud.com" with the base URL of your self-service panel (do not replace the ":5000/v3" part)
 export OS_IDENTITY_API_VERSION=3
 export OS_AUTH_TYPE=password
 export OS_INSECURE=true
