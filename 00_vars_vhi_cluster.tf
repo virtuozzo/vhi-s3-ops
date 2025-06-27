@@ -1,8 +1,12 @@
 # This file contains variables describing VHI cluster
-## VHI image name
+## VHI image name/id
 variable "vhi-image" {
-  type = string
-  default = "VHI-latest.qcow2" # If required, replace the image name with the one you have in the cloud
+  type    = string
+  default = "a74ff284-4d1a-46db-9dac-0a6d6501ae7f" # If required, replace the image name/uuid with the one you have in the cloud
+}
+variable "vhi-image_isUUID" {
+  type    = bool
+  default = true # Set to true if vhi-image is UUID
 }
 
 ## Main node flavor name
