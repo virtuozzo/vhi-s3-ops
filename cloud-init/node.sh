@@ -346,7 +346,7 @@ then ### Code running only on node1
     service compute create \
     --wait \
     --public-network=Public \
-    --subnet cidr="10.0.101.0/24",gateway="10.0.101.1",dhcp="enable",allocation-pool="10.0.101.50-10.0.101.100",dns-server="8.8.8.8" \
+    --subnet cidr="10.0.102.0/24",gateway="10.0.102.1",dhcp="enable",allocation-pool="10.0.102.50-10.0.102.100",dns-server="8.8.8.8" \
     --enable-k8saas \
     --enable-lbaas \
     --enable-metering \
